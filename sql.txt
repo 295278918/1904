@@ -1,0 +1,312 @@
+26查询出生日期在1997之前的男员工的平均薪资
+select avg(a1.money) from y_hu a1 where  DATE_FORMAT(a1.date,'%Y%')<1997 and a1.sex=1
+
+
+27查询出生日期为1999年，姓李的员工的薪资之和
+
+select sum(a1.money) from y_hu a1 where    and a1.name like '李%'
+
+
+28查询姓王的女员工出生日期在1996年的权限个数
+select count(a5.id) from y_hu a1,y_u_r a2,y_r a3,y_r_f a4,y_f a5 where a1.id=a2.uid
+and a2.rid=a3.id and a3.id=a4.rid and a4.fid=a5.id and  a1.name like '王%'
+and a1.sex=2 and DATE_FORMAT(a1.date,'%Y%')=1996
+
+29查询省份为山西，性别为女拥有添加员工权限的用户个数
+select count(a1.id) from y_hu a1,y_u_r a2,y_r a3,y_r_f a4,y_f a5 where a1.id=a2.uid
+and a2.rid=a3.id and a3.id=a4.rid and a4.fid=a5.id and a1.province='山西'
+and a5.name='添加员工' and a1.sex=2 
+
+30查询省份为江苏的，职位为员工的平均薪资
+select avg(a1.money) from y_hu a1,y_u_r a2,y_r a3 where a1.id=a2.uid
+and a2.rid=a3.id  and a1.province='江苏' and a3.name='员工'
+
+
+--31删除低于平均薪资的男员工--
+Delect y_hu  h where h.Ymoney<(select avg(h.Yh_money) from y_hu  h where h.Yh_e=1)
+
+
+delect from y_hu a1 where a1.money<(select avg(a1.money) from y_hu a1 where 
+a1.sex=1)
+
+
+/*32给性别为女，出生日期在1995之前的员工薪资上调百分之5*/
+
+ update y_hu a1 set a1.money=a1.money*1.05
+where  DATE_FORMAT(a1.date,'%Y%')<1995 and a1.sex=2
+
+
+--33查询每个学生的姓名，年龄和分数
+select * from c_stu c1,c_class c2,c_teacher c3,c_sc c4 where c1.id=c2.sid
+and c2.tid=c3.id and c1.id=c4.sid
+
+select c1.name ,c1.age,sum(c4.score) from c_stu c1,c_class c2,c_teacher c3,c_sc c4 where c1.id=c2.sid
+and c2.tid=c3.id and c1.id=c4.sid GROUP BY c1.id
+
+
+--34查询姓‘李’老师所教过同学的姓名和班级信息
+select c1.name,c2.name from c_stu c1,c_class c2,c_teacher c3,c_sc c4 where c1.id=c2.sid
+and c2.tid=c3.id and c1.id=c4.sid and c3.name like '李%'
+
+-35查询姓‘赵’同学的班级信息和老师
+select c2.name,c3.name from c_stu c1,c_class c2,c_teacher c3,c_sc c4 where c1.id=c2.sid
+and c2.tid=c3.id and c1.id=c4.sid and c1.name like '赵%'
+
+--36查询分数大于70的同学有几个
+select count(c1.id) from c_stu c1,c_class c2,c_teacher c3,c_sc c4 where c1.id=c2.sid
+and c2.tid=c3.id and c1.id=c4.sid and c4.score>70
+
+
+--37查询分数低于60的学生的平均年龄
+select avg(c1.age) from c_stu c1,c_class c2,c_teacher c3,c_sc c4 where c1.id=c2.sid
+and c2.tid=c3.id and c1.id=c4.sid and c4.score>60
+
+--38查询每个班级的学生信息
+select * from c_stu c1,c_class c2,c_teacher c3,c_sc c4 where c1.id=c2.sid
+and c2.tid=c3.id and c1.id=c4.sid GROUP BY c2.id
+
+--39查询‘王’老师教的同学所有的信息
+select * from c_stu c1,c_class c2,c_teacher c3,c_sc c4 where c1.id=c2.sid
+and c2.tid=c3.id and c1.id=c4.sid and c3.name like '王%'
+
+
+--40查询姓‘赵’同学的分数
+
+select c4.score from c_stu c1,c_class c2,c_teacher c3,c_sc c4 where c1.id=c2.sid
+and c2.tid=c3.id and c1.id=c4.sid and c1.name like '赵%'
+
+--41.查询拥有神龙摆尾技能的英雄有几个
+select * from c_hero a1,c_hero_q a2,c_hero_f a3 where a1.id=a2.hid 
+and a2.fid=a3.id
+
+select count(a1.id) from c_hero a1,c_hero_q a2,c_hero_f a3 where a1.id=a2.hid 
+and a2.fid=a3.id and a3.name='神龙摆尾'
+
+
+
+--42.查询英雄生日在2000-12-13的技能名称
+select a3.name from c_hero a1,c_hero_q a2,c_hero_f a3 where a1.id=a2.hid 
+and a2.fid=a3.id and DATE_FORMAT(a1.date,'%Y-%m-%d')='2000-12-13'
+
+
+--43.查询拥有狂风绝息斩技能英雄的平均年龄
+select avg(a1.age) from c_hero a1,c_hero_q a2,c_hero_f a3 where a1.id=a2.hid 
+and a2.fid=a3.id and a3.name='狂风绝息斩'
+
+
+
+--44.查询姓‘李’英雄的技能个数
+select count(a3.id) from c_hero a1,c_hero_q a2,c_hero_f a3 where a1.id=a2.hid 
+and a2.fid=a3.id and a1.name like '李%'
+
+
+--45.查询拥有狂风绝息斩技能的英雄名字
+select a1.name from c_hero a1,c_hero_q a2,c_hero_f a3 where a1.id=a2.hid 
+and a2.fid=a3.id and a3.name='狂风绝息斩'
+
+--46.查询技能为空默认展示为‘欢乐时光’技能展示为汉字形式1.神龙摆尾 2. 狂风绝息斩 3.欢乐时光
+
+select * from c_hero_f where name='欢乐时光'
+--47.查询同时拥有两个技能的英雄编号
+
+
+select count(a3.id) from c_hero a1,c_hero_q a2,c_hero_f a3 where a1.id=a2.hid 
+and a2.fid=a3.id GROUP BY a3.id
+
+--48.查询有‘神龙摆尾’和‘狂风绝息斩’所有英雄年龄的总和
+select sum(a1.age) from c_hero a1,c_hero_q a2,c_hero_f a3 where a1.id=a2.hid 
+and a2.fid=a3.id and a3.name='狂风绝息斩' or a3.name='神龙摆尾' 
+
+
+
+--49.查询出角色为”学生”的权限个数
+select * from d_user d1, d_u_r  d2,d_r d3,d_r_f d4,d_f d5
+where d1.id=d2.uid and d2.rid=d3.id and d3.id =d4.rid and d4.fid=d5.id
+
+
+select count(d5.id) from d_user d1, d_u_r  d2,d_r d3,d_r_f d4,d_f d5
+where d1.id=d2.uid and d2.rid=d3.id and d3.id =d4.rid and d4.fid=d5.id
+and d3.name='学生'
+
+
+--50.查询出姓‘王’的院长的权限个数
+select count(d5.id) from d_user d1, d_u_r  d2,d_r d3,d_r_f d4,d_f d5
+where d1.id=d2.uid and d2.rid=d3.id and d3.id =d4.rid and d4.fid=d5.id
+and d1.name like '王%' and d3.name='院长'
+--51.查询所有‘教师’的权限个数以及平均年龄
+select count(d5.id),avg(d1.age) from d_user d1, d_u_r  d2,d_r d3,d_r_f d4,d_f d5
+where d1.id=d2.uid and d2.rid=d3.id and d3.id =d4.rid and d4.fid=d5.id
+and d3.name='教师'
+
+
+
+
+select * from t_student 学生表
+
+
+select * from t_course 课程表
+
+select * from t_sc 学生成绩表
+
+
+
+select * from t_teacher 老师表
+
+
+
+    --http://blog.csdn.net/lifetragedy/article/details/9935699
+    --create table t_student(stuid number(10,2) primary key,name varchar2(100), age number(3,0), sex char(1));
+     
+    --create table t_course(cid number(10,2) primary key, name varchar2(100), teacherid number(10, 2));
+    --alter table t_course
+    --add constraint tcourse_fk foreign key (teacherid) references t_teacher(tid);
+     
+    --create table t_sc(stuid number(10, 2), cid number(10,2), score number(10,2));
+    --alter table t_sc 
+    --add constraint t_sc_pk primary key (stuid, cid);
+    --alter table t_sc
+    --add constraint t_sc_stuid_fk foreign key (stuid) references t_student(stuid);
+    --alter table t_sc
+    --add constraint t_sc_cid_fk foreign key (cid) references t_course(cid);
+     
+    --create table t_teacher(tid number(10,2) primary key, tname varchar2(100));
+    /*
+    select * from t_student for update;
+    select * from t_course for update;
+    select * from t_sc for update;
+    select * from t_teacher for update;
+    */
+     
+    --查询“1”课程比“2”课程成绩高的所有学生的学号
+    select a.stuid
+      from (select * from t_sc s where s.cid = 1) a,
+           (select * from t_sc s where s.cid = 2) b
+     where a.stuid = b.stuid
+       and a.score > b.score;
+    /*
+    select a.S#
+      from (select s#, score from SC where C# = '001') a,
+           (select s#, score from SC where C# = '002')
+     where a.score > b.score
+       and a.s# = b.s#;
+    */
+    --2、查询平均成绩大于80分的同学的学号和平均成绩；
+    select stuid, avg(score) from t_sc group by stuid having avg(score)>80;
+     
+    --3、查询所有同学的学号、姓名、选课数、总成绩；
+    select s.stuid, s.name, c.xks, c.zcj
+      from t_student s left outer join
+           (select stuid, count(cid) xks, sum(score) zcj
+              from t_sc
+             group by stuid) c
+     on s.stuid = c.stuid;
+     
+    select s.stuid, s.name, count(c.cid), sum(c.score)
+      from t_student s
+      left Outer join t_sc c
+        on s.stuid = c.stuid
+     group by s.stuid, s.name;
+    --4、查询姓“李”的老师的个数；
+    select count(tid) from t_teacher where tname like '李%';
+     
+    --5、查询没学过“叶平”老师课的同学的学号、姓名；
+    select s.stuid,s.name from t_student s, t_course c, t_teacher t, t_sc sc where s.stuid=sc.stuid and c.cid=sc.cid and c.teacherid=t.tid and t.tname!='叶平';
+     
+     select Student.S#, Student.Sname
+       from Student
+      where S# not in
+            (select distinct (SC.S#) from SC,
+                             Course,
+                             Teacher where SC.C# = Course.C#and Teacher.T# = Course.T# andTeacher.Tname = '叶平');
+     
+    --6、查询学过“001”并且也学过编号“002”课程的同学的学号、姓名；
+    select s.stuid,s.name from t_student s, t_sc c where c.cid=1 and s.stuid=c.stuid and exists (select * from t_sc sc where sc.stuid=s.stuid and sc.cid=2);
+     
+    -- select Student.S#,Student.Sname fromStudent,SC where Student.S#=SC.S# andSC.C#='001'and exists( Select * from SC as SC_2 where SC_2.S#=SC.S# and SC_2.C#='002');
+     
+    --7、查询学过“叶平”老师所教的所有课的同学的学号、姓名；
+    select s.stuid,s.name from t_student s, t_sc sc where s.stuid = sc.stuid and sc.cid in(
+    select c.cid from t_teacher t, t_course c where t.tid=c.teacherid and t.tname='Mr.kay');
+     
+     select S#, Sname
+       from Student
+      where S# in
+            (select S#
+               from SC, Course, Teacher
+              where SC.C# = Course.C# andTeacher.T# = Course.T#
+                and Teacher.Tname = '叶平'
+              group by S#
+             having count(SC.C#) = (select count(C#) from Course,
+                                          Teacher where Teacher.T# = Course.T# and Tname = '叶平'));
+     
+    --8、查询课程编号“002”的成绩比课程编号“001”课程低的所有同学的学号、姓名；
+    Select S#, Sname
+      from (select Student.S#,
+                   Student.Sname,
+                   score,
+                   (select score
+                      from SC SC_2
+                     where SC_2.S# = Student.S#and SC_2.C# = '002') score2
+              from Student, SC
+             where Student.S# = SC.S# andC# = '001') S_2
+     where score2 < score;
+      
+    --9、查询所有课程成绩小于60分的同学的学号、姓名；
+    select s.stuid, s.name from t_student s where s.stuid not in (select sc.stuid from t_student s, t_sc sc where sc.score>=60 and s.stuid=sc.stuid);
+    select s.stuid, s.name from t_student s where not exists (select * from t_sc sc where sc.stuid=s.stuid and sc.score>=60);
+     
+    --10、查询没有学全所有课的同学的学号、姓名;
+    select s.stuid, s.name from t_student s,t_sc sc where s.stuid=sc.stuid group by s.stuid,s.name having count(sc.cid) != (select count(cid) from t_course);
+     
+     select Student.S#, Student.Sname
+       from Student, SC whereStudent.S# = SC.S#
+      group by Student.S#, Student.Sname
+     having count(C#) < (select count(C#) from Course);
+     
+    --11、查询至少有一门课与学号为“1001”的同学所学相同的同学的学号和姓名；
+    select distinct s.stuid,s.name from t_student s, t_sc sc where s.stuid=sc.stuid and s.stuid!=1 and  sc.cid in (select cid from t_sc where stuid=1)
+    --select s.stuid,s.name from t_Student s, t_SC sc where s.stuid=SC.Stuid and sc.cid in (select Cid from t_SC where stuid='1');
+     
+    --13、把“t_SC”表中“叶平”老师教的课的成绩都更改为此课程的平均成绩；
+    update t_sc sc1 set sc1.score = 
+    (select avg(score) from t_sc group by cid having cid in (select cid from t_teacher t, t_course c where t.tid=c.teacherid and t.tname='Mr.mao') and cid=sc1.cid);
+    /*
+    update t_sc sc_1
+       set sc_1.score =
+           (select avg(sc_2.score) from t_sc sc_2 where sc_2.cid = sc_1.cid)
+           from t_course,
+           t_teacher
+     where t_course.Cid = t_sc.cid and t_course.tid = t_teacher.tid
+       and t_teacher.tname = 'Mr.mao');
+    */
+    select * from t_sc sc, t_course c, t_teacher t where sc.cid=c.cid and c.teacherid=t.tid and t.tname='Mr.mao'
+     
+     
+    --14、查询和“1002”号的同学学习的课程完全相同的其他同学学号和姓名；
+    select * from t_sc where stuid in(
+    select stuid
+      from t_sc
+     group by stuid
+    having count(*) = (select count(*) from t_sc where stuid = 6)
+    )
+    and cid in (select cid from t_sc where stuid=6);
+        
+     
+    --15、删除学习“叶平”老师课的SC表记录
+    delete t_sc where cid in(
+    select cid from t_course c, t_teacher t where c.teacherid=t.tid and t.tname='Mr.mao');
+     
+    --16、向SC表中插入一些记录，这些记录要求符合以下条件：没有上过编号“5”课程的同学学号、2号课的平均成绩；
+    insert into t_sc 
+    select stuid, '5' cid, (select avg(score) from t_sc sc where sc.cid=2) score
+     from t_student s where not exists
+    (select * from t_sc sc where sc.cid=5 and sc.stuid=s.stuid);
+     
+    --17、按平均成绩从高到低显示所有学生的“数据库”、“企业管理”、“英语”三门的课程成绩，按
+    --如下形式显示： 学生ID,,数据库,企业管理,英语,有效课程数,有效平均分
+     
+    select t.stuid,
+           max(case t.cname when 'Chinese' then t.score end) Chinese,
+           max(case t.cname when 'Math' then t.score end) Math,
+           max(case t.cname when 'English' then t.score end) Engli
+
